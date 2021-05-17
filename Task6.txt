@@ -1,0 +1,28 @@
+Task 6) Regular expressions:
+
+a) Write a regular expression that matches the following email addresses: 
+ f.soler@strands.com / i.tarradellas@strands.com / a.dereina@strands.com 
+
+Expresión regular simple:
+
+[a-z.@]+ -> Extrae caracteres del rango a-z minúsculas con puntos y @s. Versión cutre
+
+Poniéndonos un poco exigentes con el dominio y el arroba, podemos hacer que el usuario tenga solo minúsculas y el punto no sea inicial ni final:
+[a-z]+([.][a-z])*[a-z]*@strands.com
+
+
+
+
+b) Write a regular expression that matches the following string, and is able to extract the date: 
+
+ELCORTEINGLES28/5/13
+CARREFOUR2/10/13 
+
+
+[0-9/]+ -> Extrae números y / sin establecer ningún tipo de prioridad.
+
+[0-9/]?[0-9]\/[0-9]?[0-9]\/[0-9]?[0-9] -> Un formato muy simple que acepta fechas en formato dd/mm/yy, sin respetar que hay 12 meses o meses en los que hay 28 o 31 días.
+
+
+
+Obviamente se pueden añadir más reglas y complejidad pero para el caso no es necesario.
