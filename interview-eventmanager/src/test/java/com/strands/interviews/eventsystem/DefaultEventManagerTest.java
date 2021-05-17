@@ -119,4 +119,20 @@ public class DefaultEventManagerTest
         assertFalse(eventListenerMock.isCalled());
     }
 
+    @Test
+    public void task2() {
+        EventListenerMock eventListenerMock1 = new EventListenerMock(new Class[]{});
+        EventListenerMock eventListenerMock2 = new EventListenerMock(new Class[]{});
+        EventListenerMock eventListenerMock3 = new EventListenerMock(new Class[]{});
+        eventManager.registerListener("some.key", eventListenerMock1);
+        eventManager.publishEvent(new SubEvent(this));
+        eventManager.registerListener("some.key2", eventListenerMock2);
+        eventManager.publishEvent(new CreationEvent(this));
+        eventManager.registerListener("some.key3", eventListenerMock3);
+        eventManager.publishEvent(new SimpleEvent(this));
+        assertTrue(eventListenerMock1.isCalled());
+        assertTrue(eventListenerMock2.isCalled());
+        assertTrue(eventListenerMock3.isCalled());
+    }
+
 }

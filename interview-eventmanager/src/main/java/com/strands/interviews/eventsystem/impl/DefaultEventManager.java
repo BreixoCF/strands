@@ -3,6 +3,9 @@ package com.strands.interviews.eventsystem.impl;
 import com.strands.interviews.eventsystem.EventManager;
 import com.strands.interviews.eventsystem.InterviewEvent;
 import com.strands.interviews.eventsystem.InterviewEventListener;
+import com.strands.interviews.eventsystem.events.CreationEvent;
+import com.strands.interviews.eventsystem.events.SimpleEvent;
+import com.strands.interviews.eventsystem.events.SubEvent;
 
 import java.util.*;
 
@@ -43,13 +46,21 @@ public class DefaultEventManager implements EventManager
         if (listener == null)
             throw new IllegalArgumentException("The listener must not be null: " + listener);
 
-        if (listeners.containsKey(listenerKey))
+        if (listeners.containsKey(listenerKey)) {
             unregisterListener(listenerKey);
+        }
 
         Class[] classes = listener.getHandledEventClasses();
 
-        for (int i = 0; i < classes.length; i++)
+        /* Task 2 */
+        if (classes.length == 0) {
+            classes = new Class[]{SimpleEvent.class, CreationEvent.class, SubEvent.class};
+        }
+        /* Task 2 */
+
+        for (int i = 0; i < classes.length; i++) {
             addToListenerList(classes[i], listener);
+        }
 
         listeners.put(listenerKey, listener);
     }
@@ -81,6 +92,7 @@ public class DefaultEventManager implements EventManager
 
     private void addToListenerList(Class aClass, InterviewEventListener listener)
     {
+
         if (!listenersByClass.containsKey(aClass))
             listenersByClass.put(aClass, new ArrayList());
 
