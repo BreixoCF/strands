@@ -1,0 +1,39 @@
+Task 5: Databases and SQL
+
+a) Get the total number of transactions in 2013 of a specific category (‘15’) and user (‘356789’). 
+select count(*) from transaction t
+inner join account a on
+t.account_id = a.id
+where a.user_id = 356789 and t.category_id = 15 and year(posted_date) = 2013;
+
+
+b) Get transactions of a user filtering by account and current month.
+Me parece que tengo que refinarla, porque necesito datos pero más o menos interpreto que por aquí van los tiros.
+Se buscan las transacciones de cada usuario por mes, independientemente de la cuenta con la que la haya hecho.
+
+select * from transaction t
+inner join account a
+on t.account_id = a.id
+inner join user u
+on a.user_id = u.id
+group by u.id, month(t.posted_date);
+
+
+c) Get income categories of a user for the current month. A category is considered INCOME when
+the amount of the transaction is positive.
+Esta consulta no sé si la he entendido bien, aún así me falta asociar el usuario con la subconsulta y depurarla con los datos. De todas formas, la he entendido de dos formas:
+que la categoría sea INCOME cuando el sumatorio de todas las transacciones de dicha categoría para un usuario sea positiva, o que sea INCOME una categoría cuando tenga una transacción positiva.
+La primera es lo que me pedía el cuerpo, la segunda la traducción literal del enunciado, así que he supuesto la segunda.
+
+
+select u.name, c.name from transaction t
+inner join account a
+on a.id = t.account_id
+inner join user u
+on u.id = a.user_id
+where month(t.posted_date) = month(current_date())
+and year(t.posted_date) = year(current_date())
+and c.id = (select id from category c
+inner join transaction t
+on t.category_id = c.id
+where t.amount > 0);
